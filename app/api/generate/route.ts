@@ -114,10 +114,18 @@ export async function POST(request: Request) {
     console.log("[Route] API raw length", responseText.length)
     console.log("[Route] API raw preview", responseText.slice(0, 500))
 
+    if (responseText.length > 10 * 1024 * 1024) {
+      console.error("[Route] Response too large:", responseText.length)
+      return Response.json(
+        { error: "Response too large from API", size: responseText.length },
+        { status: 502 }
+      )
+    }
+
     if (statusCode !== 200) {
       console.error("[Route] API error", statusCode, responseText.slice(0, 200))
       return Response.json(
-        { error: "API error", status: statusCode, body: responseText },
+        { error: "API error", status: statusCode, body: responseText.slice(0, 1000) },
         { status: statusCode }
       )
     }
