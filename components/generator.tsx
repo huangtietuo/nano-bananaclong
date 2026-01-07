@@ -65,8 +65,8 @@ export function Generator() {
     if (file) {
       const reader = new FileReader()
       
-      if (file.size > 2 * 1024 * 1024) {
-        reportError("Image too large. Please upload an image smaller than 2MB.")
+      if (file.size > 10 * 1024 * 1024) {
+        reportError("Image too large. Please upload an image smaller than 10MB.")
         return
       }
       
