@@ -60,12 +60,46 @@ export function Generator() {
     window.alert(message)
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const reader = new FileReader()
+      
+      if (file.size > 2 * 1024 * 1024) {
+        reportError("Image too large. Please upload an image smaller than 2MB.")
+        return
+      }
+      
       reader.onload = (event) => {
-        setUploadedImage(event.target?.result as string)
+        const img = new Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          
+          const maxSize = 1024
+          let width = img.width
+          let height = img.height
+          
+          if (width > height) {
+            if (width > maxSize) {
+              height *= maxSize / width
+              width = maxSize
+            }
+          } else {
+            if (height > maxSize) {
+              width *= maxSize / height
+              height = maxSize
+            }
+          }
+          
+          canvas.width = width
+          canvas.height = height
+          ctx?.drawImage(img, 0, 0, width, height)
+          
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85)
+          setUploadedImage(compressedDataUrl)
+        }
+        img.src = event.target?.result as string
       }
       reader.readAsDataURL(file)
     }
