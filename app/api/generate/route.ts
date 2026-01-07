@@ -1,5 +1,10 @@
 export const dynamic = "force-dynamic"
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
+import https from "https"
+import { Readable } from "stream"
+
 export async function POST(request: Request) {
   const startedAt = Date.now()
   console.log("[Route] POST /api/generate - start", {
@@ -62,7 +67,7 @@ export async function POST(request: Request) {
     }
 
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000)
+    const timeoutId = setTimeout(() => controller.abort(), 120000)
 
     const apiKey = process.env.GEMINI_API_KEY?.trim()
     if (!apiKey) {
@@ -70,57 +75,65 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing API key" }, { status: 500 })
     }
 
-    let response: Response
+    let responseText: string
+    let statusCode: number
     try {
       console.log("[Route] calling upstream")
-      response = await fetch("https://breakout.wenwen-ai.com/v1/chat/completions", {
+      
+      const url = new URL("https://breakout.wenwen-ai.com/v1/chat/completions")
+      const requestBody = JSON.stringify({
+        model: "gemini-2.5-flash-image",
+        stream: false,
+        messages,
+      })
+
+      const response = await fetch(url.toString(), {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          model: "gemini-2.5-flash-image",
-          stream: false,
-          messages,
-        }),
+        body: requestBody,
         signal: controller.signal,
       })
+      
+      statusCode = response.status
+      responseText = await response.text()
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
         console.error("[Route] API timeout")
         return Response.json({ error: "Upstream timeout" }, { status: 504 })
       }
-      throw error
+      console.error("[Route] fetch error", error)
+      return Response.json({ error: "Failed to connect to API" }, { status: 500 })
     } finally {
       clearTimeout(timeoutId)
     }
 
-    const raw = await response.text()
-    console.log("[Route] API status", response.status)
-    console.log("[Route] API raw length", raw.length)
-    console.log("[Route] API raw preview", raw.slice(0, 500))
+    console.log("[Route] API status", statusCode)
+    console.log("[Route] API raw length", responseText.length)
+    console.log("[Route] API raw preview", responseText.slice(0, 500))
 
-    if (!response.ok) {
-      console.error("[Route] API error", response.status, raw.slice(0, 200))
+    if (statusCode !== 200) {
+      console.error("[Route] API error", statusCode, responseText.slice(0, 200))
       return Response.json(
-        { error: "API error", status: response.status, body: raw },
-        { status: response.status }
+        { error: "API error", status: statusCode, body: responseText },
+        { status: statusCode }
       )
     }
 
-    if (!raw.trim()) {
+    if (!responseText.trim()) {
       console.error("[Route] empty response body")
       return Response.json({ error: "Empty response from API" }, { status: 502 })
     }
 
     let data: unknown
     try {
-      data = JSON.parse(raw)
+      data = JSON.parse(responseText)
       console.log("[Route] parsed data keys", Object.keys(data as object))
     } catch (parseError) {
       console.error("[Route] invalid JSON", parseError)
-      return Response.json({ error: "Invalid JSON from API", body: raw }, { status: 502 })
+      return Response.json({ error: "Invalid JSON from API", body: responseText }, { status: 502 })
     }
 
     console.log("[Route] done", { durationMs: Date.now() - startedAt })
