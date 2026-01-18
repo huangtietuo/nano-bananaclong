@@ -35,7 +35,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="tongyi-design-pc" data-theme="light" style={{ colorScheme: 'light' }}>
+    <html 
+      lang="en" 
+      className="tongyi-design-pc" 
+      data-theme="light"
+      suppressHydrationWarning={true}
+    >
       <body className={`${inter.className} antialiased`}>
         {children}
       </body>

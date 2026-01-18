@@ -17,8 +17,27 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // 禁用 source map 生成
+  productionBrowserSourceMaps: false,
+  devIndicators: {
+    autoPrune: true,
+  },
   turbopack: {
     root: __dirname,
+  },
+  // 配置 webpack 以忽略 source map 错误（如果使用 webpack 构建）
+  webpack: (config) => {
+    // 禁用 webpack source map 生成
+    config.devtool = false;
+    config.ignoreWarnings = [
+      {
+        message: /Invalid source map/,
+      },
+      {
+        message: /sourceMapURL could not be parsed/,
+      },
+    ];
+    return config;
   },
   async headers() {
     return [
