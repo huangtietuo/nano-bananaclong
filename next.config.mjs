@@ -7,7 +7,7 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 
 const cspValue = isDevelopment
   ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:;"
-  : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://breakout.wenwen-ai.com; font-src 'self' data:;"
+  : "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://breakout.wenwen-ai.com; font-src 'self' data:;"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
