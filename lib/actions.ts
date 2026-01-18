@@ -18,6 +18,10 @@ export async function signInWithGoogle() {
     provider: "google",
     options: {
       redirectTo: `${origin}/auth/callback`,
+      // 添加 prompt: 'login' 直接显示登录界面，而不是账户选择界面
+      queryParams: {
+        prompt: 'login'
+      }
     },
   })
   

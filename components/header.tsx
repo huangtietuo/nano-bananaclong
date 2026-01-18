@@ -4,6 +4,7 @@ import React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { GoogleSignInButton } from "./google-sign-in-button"
+import { signOut } from "@/lib/actions"
 
 // Define User type
 interface User {
@@ -17,12 +18,6 @@ interface User {
 export function Header({ initialUser }: { initialUser: User | null }) {
   // User data from server component props
   const [user, setUser] = React.useState<User | null>(initialUser)
-
-  async function signOut() {
-    // Use client-side sign out
-    await fetch('/api/auth/signout', { method: 'POST' })
-    window.location.href = '/'
-  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
