@@ -1,40 +1,27 @@
+'use client'
+
+import React from "react"
 import Link from "next/link"
-import { headers } from "next/headers"
-import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { createClient } from "@/lib/supabase/server"
+import { GoogleSignInButton } from "./google-sign-in-button"
 
-export async function Header() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+// Define User type
+interface User {
+  id: string
+  email: string
+  // Add other user properties as needed
+}
 
-  async function signInWithGoogle() {
-    "use server"
-    const supabaseClient = await createClient()
-    const origin = headers().get("origin")
-      ?? process.env.NEXT_PUBLIC_SITE_URL
-      ?? "http://localhost:3000"
-    const { data, error } = await supabaseClient.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${origin}/auth/callback`,
-      },
-    })
+// Create a client component for the header UI
 
-    if (error) {
-      return
-    }
-
-    if (data?.url) {
-      redirect(data.url)
-    }
-  }
+export function Header({ initialUser }: { initialUser: User | null }) {
+  // User data from server component props
+  const [user, setUser] = React.useState<User | null>(initialUser)
 
   async function signOut() {
-    "use server"
-    const supabaseClient = await createClient()
-    await supabaseClient.auth.signOut()
-    redirect("/")
+    // Use client-side sign out
+    await fetch('/api/auth/signout', { method: 'POST' })
+    window.location.href = '/'
   }
 
   return (
@@ -71,11 +58,7 @@ export async function Header() {
               </form>
             </>
           ) : (
-            <form action={signInWithGoogle}>
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Sign in with Google
-              </Button>
-            </form>
+            <GoogleSignInButton />
           )}
           <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
             Start Editing

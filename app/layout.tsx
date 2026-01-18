@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="tongyi-design-pc" data-theme="light" style={{ colorScheme: 'light' }}>
       <body className={`${inter.className} antialiased`}>
         {children}
       </body>
