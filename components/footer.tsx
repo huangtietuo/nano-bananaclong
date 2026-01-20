@@ -1,4 +1,10 @@
+'use client'
+
+import Link from "next/link"
+import { useI18n } from "@/components/i18n-provider"
+
 export function Footer() {
+  const { t } = useI18n()
   return (
     <footer className="border-t border-border/40">
       <div className="container px-4 py-12">
@@ -9,24 +15,27 @@ export function Footer() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <a href="#generator" className="hover:text-primary transition-colors">
-              Generator
-            </a>
-            <a href="#showcase" className="hover:text-primary transition-colors">
-              Showcase
-            </a>
-            <a href="#reviews" className="hover:text-primary transition-colors">
-              Reviews
-            </a>
-            <a href="#faq" className="hover:text-primary transition-colors">
-              FAQ
-            </a>
+            <Link href="/pricing" className="hover:text-primary transition-colors">
+              {t("nav.pricing")}
+            </Link>
+            <Link href="/#generator" className="hover:text-primary transition-colors">
+              {t("nav.generator")}
+            </Link>
+            <Link href="/#showcase" className="hover:text-primary transition-colors">
+              {t("nav.showcase")}
+            </Link>
+            <Link href="/#reviews" className="hover:text-primary transition-colors">
+              {t("nav.reviews")}
+            </Link>
+            <Link href="/#faq" className="hover:text-primary transition-colors">
+              {t("nav.faq")}
+            </Link>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>© 2025 Nano Banana. Experience the future of AI image editing.</p>
-          <p className="mt-2 text-xs">Nano Banana is not related to Google or other AI companies.</p>
+          <p>{t("footer.copyright")}</p>
+          <p className="mt-2 text-xs">{t("footer.disclaimer")}</p>
         </div>
       </div>
     </footer>

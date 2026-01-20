@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { I18nProvider } from "@/components/i18n-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -41,8 +42,8 @@ export default function RootLayout({
       data-theme="light"
       suppressHydrationWarning={true}
     >
-      <body className={`${inter.className} antialiased`}>
-        {children}
+      <body className={`${inter.className} antialiased bg-gradient-to-b from-background via-background to-muted/30`}>
+        <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
   )

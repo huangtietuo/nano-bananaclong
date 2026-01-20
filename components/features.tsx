@@ -1,49 +1,51 @@
+'use client'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { MessageSquare, Users, Layers, Zap, ImageIcon, Sparkles } from "lucide-react"
+import { useI18n } from "@/components/i18n-provider"
 
 const features = [
   {
     icon: MessageSquare,
-    title: "Natural Language Editing",
-    description: "Edit images using simple text prompts. Our AI understands complex instructions like GPT for images.",
+    titleKey: "features.1.title",
+    descriptionKey: "features.1.desc",
   },
   {
     icon: Users,
-    title: "Character Consistency",
-    description:
-      "Maintain perfect character details across edits. This model excels at preserving faces and identities.",
+    titleKey: "features.2.title",
+    descriptionKey: "features.2.desc",
   },
   {
     icon: Layers,
-    title: "Scene Preservation",
-    description: "Seamlessly blend edits with original backgrounds. Superior scene fusion for natural results.",
+    titleKey: "features.3.title",
+    descriptionKey: "features.3.desc",
   },
   {
     icon: Zap,
-    title: "One-Shot Editing",
-    description:
-      "Perfect results in a single attempt. Our model solves one-shot image editing challenges effortlessly.",
+    titleKey: "features.4.title",
+    descriptionKey: "features.4.desc",
   },
   {
     icon: ImageIcon,
-    title: "Multi-Image Context",
-    description: "Process multiple images simultaneously. Support for advanced multi-image editing workflows.",
+    titleKey: "features.5.title",
+    descriptionKey: "features.5.desc",
   },
   {
     icon: Sparkles,
-    title: "AI UGC Creation",
-    description: "Create consistent AI influencers and UGC content. Perfect for social media and marketing campaigns.",
+    titleKey: "features.6.title",
+    descriptionKey: "features.6.desc",
   },
 ]
 
 export function Features() {
+  const { t } = useI18n()
   return (
     <section className="py-24 border-b border-border/40">
       <div className="container px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Nano Banana?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("features.title")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            The most advanced AI image editor. Revolutionize your photo editing with natural language understanding.
+            {t("features.subtitle")}
           </p>
         </div>
 
@@ -55,11 +57,11 @@ export function Features() {
                   <div className="p-2 rounded-lg bg-primary/10">
                     <feature.icon className="h-5 w-5 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  <CardTitle className="text-lg">{t(feature.titleKey)}</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base leading-relaxed">{feature.description}</CardDescription>
+                <CardDescription className="text-base leading-relaxed">{t(feature.descriptionKey)}</CardDescription>
               </CardContent>
             </Card>
           ))}

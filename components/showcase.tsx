@@ -1,7 +1,11 @@
+'use client'
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { useI18n } from "@/components/i18n-provider"
 
 const showcases = [
   {
@@ -27,17 +31,18 @@ const showcases = [
 ]
 
 export function Showcase() {
+  const { t } = useI18n()
   return (
     <section id="showcase" className="py-24 bg-muted/30">
       <div className="container px-4">
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4">
             <span className="mr-1">⚡</span>
-            Lightning-Fast AI Creations
+            {t("showcase.badge")}
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">See What Nano Banana Generates</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("showcase.title")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Experience the speed and quality of our AI image generation in milliseconds
+            {t("showcase.subtitle")}
           </p>
         </div>
 
@@ -60,7 +65,7 @@ export function Showcase() {
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{showcase.title}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Created in {showcase.time} with Nano Banana&apos;s optimized AI engine
+                  {t("showcase.createdIn").replace("{time}", showcase.time)}
                 </p>
               </CardContent>
             </Card>
@@ -68,9 +73,11 @@ export function Showcase() {
         </div>
 
         <div className="text-center">
-          <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            Try Nano Banana Generator
-            <ArrowRight className="ml-2 h-4 w-4" />
+          <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Link href="/#generator">
+              {t("showcase.cta")}
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>

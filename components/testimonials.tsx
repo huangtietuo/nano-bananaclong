@@ -1,45 +1,47 @@
+'use client'
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { useI18n } from "@/components/i18n-provider"
 
 const testimonials = [
   {
     name: "Sarah Chen",
-    role: "Digital Creator",
+    roleKey: "reviews.1.role",
     handle: "@AIArtistPro",
-    content:
-      "This editor completely changed my workflow. The character consistency is incredible - miles ahead of competitors!",
+    contentKey: "reviews.1.content",
     avatar: "SC",
   },
   {
     name: "Marcus Johnson",
-    role: "UGC Specialist",
+    roleKey: "reviews.2.role",
     handle: "@ContentCreator",
-    content:
-      "Creating consistent AI influencers has never been easier. It maintains perfect face details across edits!",
+    contentKey: "reviews.2.content",
     avatar: "MJ",
   },
   {
     name: "Emily Rodriguez",
-    role: "Professional Editor",
+    roleKey: "reviews.3.role",
     handle: "@PhotoEditor",
-    content: "One-shot editing is basically solved with this tool. The scene blending is so natural and realistic!",
+    contentKey: "reviews.3.content",
     avatar: "ER",
   },
 ]
 
 export function Testimonials() {
+  const { t } = useI18n()
   return (
     <section id="reviews" className="py-24 border-b border-border/40">
       <div className="container px-4">
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4">
             <span className="mr-1">💬</span>
-            User Reviews
+            {t("reviews.badge")}
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">What Creators Are Saying</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("reviews.title")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of creators transforming their workflow with Nano Banana
+            {t("reviews.subtitle")}
           </p>
         </div>
 
@@ -55,11 +57,11 @@ export function Testimonials() {
                   </Avatar>
                   <div>
                     <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    <p className="text-sm text-muted-foreground">{t(testimonial.roleKey)}</p>
                     <p className="text-xs text-muted-foreground">{testimonial.handle}</p>
                   </div>
                 </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{testimonial.content}&rdquo;</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{t(testimonial.contentKey)}&rdquo;</p>
               </CardContent>
             </Card>
           ))}

@@ -13,6 +13,7 @@ export async function GET(request: Request) {
     
     try {
       console.log("Exchanging code for session...")
+      // exchangeCodeForSession 会自动设置会话 cookies
       const { data, error } = await supabase.auth.exchangeCodeForSession(code)
       
       if (error) {

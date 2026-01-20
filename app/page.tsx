@@ -36,10 +36,15 @@ async function Header() {
   return <HeaderClient initialUser={user} />
 }
 
-export default async function Home({ searchParams }: { searchParams: { code?: string } }) {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string }> | { code?: string }
+}) {
+  const resolvedSearchParams = await Promise.resolve(searchParams)
   // 如果 URL 中有 code 参数，处理 OAuth 回调
-  if (searchParams.code) {
-    await handleOAuthCallback(searchParams.code)
+  if (resolvedSearchParams.code) {
+    await handleOAuthCallback(resolvedSearchParams.code)
     // 重定向到同一个页面，但移除 code 参数，避免重复处理
     redirect("/")
   }
