@@ -33,10 +33,31 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>{t("footer.copyright")}</p>
-          <p className="mt-2 text-xs">{t("footer.disclaimer")}</p>
+        <div className="mt-8 text-sm">
+          <p className="text-muted-foreground">
+            {t("footer.copyright").split("{site}")[0]}
+            <Link href="https://nanobananatests.online" className="hover:text-primary">
+              nanobananatests.online
+            </Link>
+            {t("footer.copyright").split("{site}")[1] ?? ""}
+          </p>
+          <p className="mt-2 text-xs text-muted-foreground">{t("footer.independent")}</p>
+          <div className="mt-4 flex flex-wrap gap-6 text-sm text-muted-foreground">
+            <Link href="/privacy-policy" className="hover:text-primary">
+              {t("footer.privacyPolicy")}
+            </Link>
+            <Link href="/terms-of-service" className="hover:text-primary">
+              {t("footer.termsOfService")}
+            </Link>
+            <Link href="/refund-policy" className="hover:text-primary">
+              {t("footer.refundPolicy")}
+            </Link>
+            <Link href="/refund-application" className="hover:text-primary">
+              {t("footer.refundApplication")}
+            </Link>
+          </div>
         </div>
+
       </div>
     </footer>
   )
