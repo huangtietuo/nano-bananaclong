@@ -38,72 +38,7 @@ type Plan = {
   cta: string
 }
 
-const plans: Plan[] = [
-  {
-    id: "basic",
-    name: "Basic",
-    description: "Perfect for individuals and light users",
-    prices: {
-      monthly: { amount: 15, suffix: "/mo" },
-      yearly: { amount: 12, suffix: "/mo", note: "$144.00/year" },
-    },
-    credits: {
-      monthly: "200 credits/month",
-      yearly: "2400 credits/year",
-    },
-    features: [
-      "100 high-quality images/month",
-      "All style templates included",
-      "Standard generation speed",
-      "Basic customer support",
-      "JPG/PNG format downloads",
-    ],
-    cta: "Subscribe Now",
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    description: "For professional creators and teams",
-    highlight: true,
-    prices: {
-      monthly: { amount: 39, suffix: "/mo" },
-      yearly: { amount: 19.5, suffix: "/mo", note: "$234.00/year", originalAmount: 39 },
-    },
-    credits: {
-      monthly: "800 credits/month",
-      yearly: "9600 credits/year",
-    },
-    features: [
-      "400 high-quality images/month",
-      "All style templates included",
-      "Priority generation queue",
-      "Priority customer support",
-      "JPG/PNG format downloads",
-    ],
-    cta: "Subscribe Now",
-  },
-  {
-    id: "max",
-    name: "Max",
-    description: "Designed for large enterprises and professional studios",
-    prices: {
-      monthly: { amount: 160, suffix: "/mo" },
-      yearly: { amount: 80, suffix: "/mo", note: "$960.00/year", originalAmount: 160 },
-    },
-    credits: {
-      monthly: "3600 credits/month",
-      yearly: "43200 credits/year",
-    },
-    features: [
-      "1800 high-quality images/month",
-      "All style templates included",
-      "Fastest generation speed",
-      "Dedicated account manager",
-      "JPG/PNG format downloads",
-    ],
-    cta: "Subscribe Now",
-  },
-]
+// Plans will be populated dynamically with translations
 
 type CurrencyOption = {
   code: string
@@ -158,12 +93,80 @@ type ExchangeRates = {
 }
 
 export function Pricing({ user }: { user: User }) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const [billingCycle, setBillingCycle] = React.useState<BillingCycle>("monthly")
   const [loadingTier, setLoadingTier] = React.useState<Tier | null>(null)
   const [error, setError] = React.useState<string | null>(null)
   const [currency, setCurrency] = React.useState<string>("USD")
   const [rates, setRates] = React.useState<ExchangeRates | null>(null)
+
+  // Generate plans with translations
+  const plans: Plan[] = [
+    {
+      id: "basic",
+      name: t("pricing.plan.basic.name"),
+      description: t("pricing.plan.basic.description"),
+      prices: {
+        monthly: { amount: 15, suffix: "/mo" },
+        yearly: { amount: 12, suffix: "/mo", note: "$144.00/year" },
+      },
+      credits: {
+        monthly: lang === "zh" ? "每月200积分" : lang === "ko" ? "월 200 크레딧" : "200 credits/month",
+        yearly: lang === "zh" ? "每年2400积分" : lang === "ko" ? "연간 2400 크레딧" : "2400 credits/year",
+      },
+      features: [
+        t("pricing.feature.images").replace("{count}", "100"),
+        t("pricing.feature.templates"),
+        t("pricing.feature.speed.standard"),
+        t("pricing.feature.support.basic"),
+        t("pricing.feature.downloads"),
+      ],
+      cta: t("pricing.plan.basic.cta"),
+    },
+    {
+      id: "pro",
+      name: t("pricing.plan.pro.name"),
+      description: t("pricing.plan.pro.description"),
+      highlight: true,
+      prices: {
+        monthly: { amount: 39, suffix: "/mo" },
+        yearly: { amount: 19.5, suffix: "/mo", note: "$234.00/year", originalAmount: 39 },
+      },
+      credits: {
+        monthly: lang === "zh" ? "每月800积分" : lang === "ko" ? "월 800 크레딧" : "800 credits/month",
+        yearly: lang === "zh" ? "每年9600积分" : lang === "ko" ? "연간 9600 크레딧" : "9600 credits/year",
+      },
+      features: [
+        t("pricing.feature.images").replace("{count}", "400"),
+        t("pricing.feature.templates"),
+        t("pricing.feature.speed.priority"),
+        t("pricing.feature.support.priority"),
+        t("pricing.feature.downloads"),
+      ],
+      cta: t("pricing.plan.pro.cta"),
+    },
+    {
+      id: "max",
+      name: t("pricing.plan.max.name"),
+      description: t("pricing.plan.max.description"),
+      prices: {
+        monthly: { amount: 160, suffix: "/mo" },
+        yearly: { amount: 80, suffix: "/mo", note: "$960.00/year", originalAmount: 160 },
+      },
+      credits: {
+        monthly: lang === "zh" ? "每月3600积分" : lang === "ko" ? "월 3600 크레딧" : "3600 credits/month",
+        yearly: lang === "zh" ? "每年43200积分" : lang === "ko" ? "연간 43200 크레딧" : "43200 credits/year",
+      },
+      features: [
+        t("pricing.feature.images").replace("{count}", "1800"),
+        t("pricing.feature.templates"),
+        t("pricing.feature.speed.fastest"),
+        t("pricing.feature.support.dedicated"),
+        t("pricing.feature.downloads"),
+      ],
+      cta: t("pricing.plan.max.cta"),
+    },
+  ]
 
   React.useEffect(() => {
     try {
@@ -268,7 +271,7 @@ export function Pricing({ user }: { user: User }) {
                 <div key={plan.id} className={plan.id === "pro" ? "relative lg:-mt-6" : "relative"}>
                   {plan.id === "pro" ? (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
+                      <Badge className="bg-primary text-primary-foreground">{t("pricing.mostPopular")}</Badge>
                     </div>
                   ) : null}
 
@@ -343,7 +346,7 @@ export function Pricing({ user }: { user: User }) {
                         {isLoading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Redirecting...
+                            {t("pricing.redirecting")}
                           </>
                         ) : (
                           plan.cta
@@ -366,7 +369,7 @@ export function Pricing({ user }: { user: User }) {
           ) : null}
 
           <div className="mx-auto mt-6 max-w-2xl text-sm text-muted-foreground">
-            {user?.email ? <span>Signed in as {user.email}</span> : <span>Sign in to attach purchases to your account.</span>}
+            {user?.email ? <span>{t("pricing.signedInAs").replace("{email}", user.email)}</span> : <span>{t("pricing.signInToAttach")}</span>}
           </div>
         </div>
       </div>

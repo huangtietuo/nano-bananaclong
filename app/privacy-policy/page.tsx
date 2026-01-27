@@ -48,7 +48,7 @@ export default async function PrivacyPolicyPage() {
       <Header />
       <LegalContent
         titleKey="legal.privacy.title"
-        updatedAt="2024-10-29"
+        updatedAt="2026-1-24"
         sections={[
           { titleKey: "legal.privacy.section1.title", bodyKeys: [privacyContent] },
         ]}

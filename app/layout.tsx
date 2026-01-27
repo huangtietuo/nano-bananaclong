@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { I18nProvider } from "@/components/i18n-provider"
+import { ToastProvider } from "@/components/ui/toast"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -43,7 +44,9 @@ export default function RootLayout({
       suppressHydrationWarning={true}
     >
       <body className={`${inter.className} antialiased bg-gradient-to-b from-background via-background to-muted/30`}>
-        <I18nProvider>{children}</I18nProvider>
+        <ToastProvider>
+          <I18nProvider>{children}</I18nProvider>
+        </ToastProvider>
       </body>
     </html>
   )

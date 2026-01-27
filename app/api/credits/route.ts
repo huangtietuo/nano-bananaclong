@@ -4,7 +4,9 @@ import { createClient as createServerClient } from "@/lib/supabase/server"
 export const runtime = "nodejs"
 
 const COOKIE_NAME = "anon_credits"
-const DEFAULT_ANON_CREDITS = 2
+// 只有登录用户才能获得积分，未登录用户没有积分
+const DEFAULT_ANON_CREDITS = 0
+const DEFAULT_LOGGED_IN_CREDITS = 2
 
 function parseIntSafe(value: string | null) {
   if (!value) return null
@@ -18,17 +20,16 @@ export async function GET(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    const current = parseIntSafe(request.cookies.get(COOKIE_NAME)?.value) ?? DEFAULT_ANON_CREDITS
-    const normalized = Math.max(0, current)
+    // 未登录用户没有积分
+    const normalized = 0
     const res = NextResponse.json({
       authenticated: false,
       plan: "free",
       credits_remaining: normalized,
       cost_per_generation: 2,
     })
-    if (!request.cookies.get(COOKIE_NAME)) {
-      res.cookies.set(COOKIE_NAME, String(normalized), { path: "/", maxAge: 60 * 60 * 24 * 30 })
-    }
+    // 设置cookie为0，确保未登录用户始终没有积分
+    res.cookies.set(COOKIE_NAME, String(normalized), { path: "/", maxAge: 60 * 60 * 24 * 30 })
     return res
   }
 
@@ -39,7 +40,8 @@ export async function GET(request: NextRequest) {
     .maybeSingle()
 
   if (error) {
-    const current = parseIntSafe(request.cookies.get(COOKIE_NAME)?.value) ?? DEFAULT_ANON_CREDITS
+    // 登录用户默认获得2个积分
+    const current = parseIntSafe(request.cookies.get(COOKIE_NAME)?.value) ?? DEFAULT_LOGGED_IN_CREDITS
     const normalized = Math.max(0, current)
     const res = NextResponse.json({
       authenticated: true,
@@ -53,7 +55,8 @@ export async function GET(request: NextRequest) {
     return res
   }
 
-  const dbCredits = typeof data?.credits_remaining === "number" ? data.credits_remaining : DEFAULT_ANON_CREDITS
+  // 登录用户默认获得2个积分
+  const dbCredits = typeof data?.credits_remaining === "number" ? data.credits_remaining : DEFAULT_LOGGED_IN_CREDITS
   const mergedCredits =
     cookieValue !== null ? Math.max(0, Math.max(cookieValue, dbCredits)) : Math.max(0, dbCredits)
 

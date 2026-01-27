@@ -46,7 +46,7 @@ export default async function RefundPolicyPage() {
       <Header />
       <LegalContent
         titleKey="legal.refundPolicy.title"
-        updatedAt="2024-10-29"
+        updatedAt="2026-1-24"
         sections={[
           { titleKey: "legal.refundPolicy.section1.title", bodyKeys: [refundPolicyContent] },
         ]}

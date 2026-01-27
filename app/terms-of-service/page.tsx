@@ -48,7 +48,7 @@ export default async function TermsOfServicePage() {
       <Header />
       <LegalContent
         titleKey="legal.terms.title"
-        updatedAt="2024-10-29"
+        updatedAt="2026-1-24"
         sections={[
           { titleKey: "legal.terms.section1.title", bodyKeys: [termsContent] },
         ]}

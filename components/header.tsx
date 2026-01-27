@@ -27,36 +27,42 @@ export function Header({ initialUser }: { initialUser: User | null }) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container h-16">
-        <div className="grid h-full grid-cols-[1fr_auto_1fr] items-center">
+      <div className="container h-18 px-3">
+        <div className="flex h-full items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 justify-self-start shrink-0">
           <div className="text-3xl">🍌</div>
           <span className="text-xl font-bold whitespace-nowrap">{"Nano\u00A0Banana"}</span>
         </Link>
 
-        <nav className="hidden md:flex items-center justify-center gap-6 justify-self-center">
-          <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors">
+        <nav className="hidden md:flex items-center justify-center gap-4 justify-self-center flex-1 max-w-[550px]">
+          <Link href="/pricing" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             {t("nav.pricing")}
           </Link>
-          <Link href="/#generator" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link href="/#generator" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             {t("nav.generator")}
           </Link>
-          <Link href="/#showcase" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link href="/video-generator" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+            {t("nav.videoGenerator")}
+          </Link>
+          <Link href="/retrorestore" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+            {t("nav.retrorestore")}
+          </Link>
+          <Link href="/#showcase" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             {t("nav.showcase")}
           </Link>
-          <Link href="/#reviews" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link href="/#reviews" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             {t("nav.reviews")}
           </Link>
-          <Link href="/#faq" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link href="/#faq" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             {t("nav.faq")}
           </Link>
         </nav>
 
-        <div className="flex items-center justify-end gap-2 justify-self-end">
+        <div className="flex items-center justify-end gap-2 justify-self-end shrink-0">
           <div className="hidden md:flex">
             <Select value={lang} onValueChange={(v) => setLang(v as Lang)}>
-              <SelectTrigger size="sm" className="h-7 w-[110px] rounded-full bg-muted/40 px-2 text-xs">
-                <Languages className="size-3.5" />
+              <SelectTrigger size="sm" className="h-8 w-[100px] rounded-full bg-muted/40 px-2 text-sm">
+                <Languages className="size-4" />
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -73,17 +79,17 @@ export function Header({ initialUser }: { initialUser: User | null }) {
 
           {user ? (
             <>
-              <span className="hidden text-sm text-muted-foreground md:inline">
+              <span className="hidden text-sm text-muted-foreground md:inline max-w-[120px] truncate">
                 {user.email}
               </span>
               <form action={signOut}>
-                <Button variant="outline" size="sm">{t("auth.signout")}</Button>
+                <Button variant="outline" size="sm" className="h-8 px-3 text-sm">{t("auth.signout")}</Button>
               </form>
             </>
           ) : (
-            <GoogleSignInButton />
+            <GoogleSignInButton className="h-8 text-sm" />
           )}
-          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 h-8 px-4 text-sm">
             <Link href="/#generator">{t("cta.startEditing")}</Link>
           </Button>
         </div>

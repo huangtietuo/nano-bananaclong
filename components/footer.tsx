@@ -49,6 +49,9 @@ export function Footer() {
             <Link href="/terms-of-service" className="hover:text-primary">
               {t("footer.termsOfService")}
             </Link>
+            <Link href="/copyright-policy" className="hover:text-primary">
+              {t("footer.aiCopyrightPolicy")}
+            </Link>
             <Link href="/refund-policy" className="hover:text-primary">
               {t("footer.refundPolicy")}
             </Link>
