@@ -6,7 +6,7 @@ export const runtime = "nodejs"
 const COOKIE_NAME = "anon_credits"
 // 只有登录用户才能获得积分，未登录用户没有积分
 const DEFAULT_ANON_CREDITS = 0
-const DEFAULT_LOGGED_IN_CREDITS = 2
+const DEFAULT_LOGGED_IN_CREDITS = 0
 
 function parseIntSafe(value: string | null) {
   if (!value) return null

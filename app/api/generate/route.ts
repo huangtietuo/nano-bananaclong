@@ -11,7 +11,7 @@ export const runtime = "nodejs"
 
 const ANON_COOKIE = "anon_credits"
 const DEFAULT_ANON_CREDITS = 0
-const DEFAULT_LOGGED_IN_CREDITS = 2
+const DEFAULT_LOGGED_IN_CREDITS = 0
 const COST_TEXT_TO_IMAGE = 1
 const COST_IMAGE_TO_IMAGE = 2
 

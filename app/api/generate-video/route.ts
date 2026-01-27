@@ -9,7 +9,7 @@ export const runtime = "nodejs"
 
 const ANON_COOKIE = "anon_credits"
 const DEFAULT_ANON_CREDITS = 0
-const DEFAULT_LOGGED_IN_CREDITS = 2
+const DEFAULT_LOGGED_IN_CREDITS = 0
 
 // 开发模式：跳过积分验证
 const DEV_MODE = process.env.DEV_MODE === "true"
